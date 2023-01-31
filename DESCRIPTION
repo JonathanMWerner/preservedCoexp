@@ -1,0 +1,22 @@
+Package: preservedCoexp
+Title: Compute the preserved co-expression of genes between two co-expression networks
+Version: 0.0.0.9000
+Authors@R: 
+    person("Jonathan", "Werner", , "werner@cshl.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package allows users to explore the preserved co-expression of genes from their single-cell RNA-seq data using a fetal brain reference co-expression network. It provides a meta-analytic co-expression network derived from fetal brain single-cell RNAseq datasets and functions for users to generate co-expression networks of their own single-cell RNAseq datasets. Users can quantify the strength of preserved co-expression between their data and our meta-analytic co-expression network for individual genes or genesets. We provide functions to quantify the preserved co-expression of our meta-analytically derived fetal cell-type markers as well as GO terms. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: false
+Imports: 
+    data.table,
+    ggplot2,
+    matrixStats,
+    reticulate
