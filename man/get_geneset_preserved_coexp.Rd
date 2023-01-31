@@ -5,6 +5,7 @@
 \title{Compute the preserved co-expression scores for genes in a geneset}
 \usage{
 get_geneset_preserved_coexp(
+  aggregated_fetal_network,
   test_network,
   geneset,
   num_top = 10,
@@ -13,6 +14,8 @@ get_geneset_preserved_coexp(
 )
 }
 \arguments{
+\item{aggregated_fetal_network}{the aggregated fetal co-expression network to act as a reference network. Any co-expression network will work, with the same gene annotations}
+
 \item{test_network}{the test co-expression network, we recommend using the rank standardized networks}
 
 \item{geneset}{vector of strings}
