@@ -4,10 +4,10 @@
 'go_genes'
 
 
-#' Aggregated fetal co-expression network
-#' @description This is the aggregated fetal network from the meta-analysis perform by Werner and Gillis (citation). 
-#' This network is derived from single-cell RNA sequencing expression data of developing fetal brain tissue ranging from gestational week 5 to 25
-'aggregated_fetal_network'
+#' Fetal metaMarkers
+#' @description This is a data frame of fetal MetaMarkers as computed in Werner and Gillis (citation). These cell-type markers were derived from annotated
+#' fetal brain scRNA-seq data spanning gestational week 5 - 25.
+'fetal_meta_markers'
 
 
 #'Biological Process go terms
