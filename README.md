@@ -7,7 +7,16 @@
 
 <!-- badges: end -->
 
-The goal of preservedCoexp is to …
+preservedCoexp is an R package that quantifies the strength of preserved
+co-expression at the gene-level across two co-expression networks. It
+was originally designed to compute preserved co-expression between human
+fetal brain and human neural organoid co-expression networks, as
+implemented in Werner and Gillis 2023 (include citation). The package
+provides functions to compute co-expression networks from a
+gene-by-sample expression matrix. The package also provides
+meta-analytic fetal cell-type markers and an aggregated fetal
+co-expression network as data for users to compute preserved
+co-expression within their own organoid co-expression networks.
 
 ## Installation
 
@@ -19,13 +28,33 @@ You can install the development version of preservedCoexp from
 devtools::install_github("JonathanMWerner/preservedCoexp")
 ```
 
-## Example
+## Beginning analysis
 
-This is a basic example which shows you how to solve a common problem:
+preservedCoexp takes as input a normalized gene-by-sample expression
+matrix. We recommend CPM normalization. This package was originally
+designed to work with single-cell expression data, but a bulk
+gene-by-sample expression matrix would work as well.
 
 ``` r
 library(preservedCoexp)
-## basic example code
+library(dplyr)
+library(ggplot2)
+
+data('go_genes', package = 'preservedCoexp')             #List of GO gene annotations
+data('fetal_meta_markers', package = 'preservedCoexp')   #Dataframe of fetal MetaMarkers 
+aggregated_fetal_network = load_fetal_coexp()            #Aggregate fetal co-expression network
+
+#Functions to compute a rank standardized co-expression network, where exp_data is a normalized gene-by-sample expression matrix
+exp_data = fit_to_GO(exp_data)              #Fit to GO gene annotations
+rank_mat = get_spearman(exp_data)           #Get co-expression matrix
+rank_mat = rank_coexpression(rank_mat)     #Get rank standardized co-expression matrix
+```
+
+``` r
+data('meta_presCoexp_df', package = 'preservedCoexp')
+plot_results = plot_meta_results(aggregated_fetal_network, rank_mat, fetal_meta_markers, meta_presCoexp_df, parallel = T)
+
+plot_results[[1]]
 ```
 
 What is special about using `README.Rmd` instead of just `README.md`?

@@ -179,6 +179,129 @@ get_metaMarker_preserved_score = function(aggregated_fetal_network, test_network
   }
 }
 
+#'Get a p-value for all GO terms quantifying whether each GO term has less (left-sided p-value) or more (right-sided p-value) preserved co-expression than expected by the length of the GO term
+#'@param aggregated_fetal_network the aggregated fetal co-expression network to act as a reference network. Any co-expression network will work, with the same gene annotations
+#'@param test_network the test co-expression network, we recommend using the rank standardized networks
+#'@param go_matrix one of the 3 binary matrices provided encoding the mappings between all genes and their GO terms
+#'#'@param parallel boolean, if the parallelized version should be implemented, requires the parallel R package
+#'@return data.frame of the resulting statistics per GO term
+#'
+#'@export
+
+get_GO_term_scores = function(aggregated_fetal_network, test_network, go_matrix, parallel = F){
+  
+  #Preserved coexpression auroc for each gene
+  if(parallel){all_gene_aurocs = get_geneset_preserved_coexp(aggregated_fetal_network, test_network, go_genes, parallel = T)
+  }else{all_gene_aurocs = get_geneset_preserved_coexp(aggregated_fetal_network, test_network, go_genes)}
+  
+  #Gene set lengths for all go terms
+  gene_set_lengths = colSums(go_matrix)
+  #Get the description for each GO term
+  gene_set_descriptions = sapply(1:length(gene_set_lengths), function(i) Term(GO_descriptions[[names(gene_set_lengths)[i]]]) )
+  
+  #Average preserved co-expression auroc for each gene set
+  gene_set_scores = apply(go_matrix, 2, crossprod, all_gene_aurocs) / gene_set_lengths
+  
+  #Population mean and sd of aurocs
+  pop_mu = mean(all_gene_aurocs)
+  pop_sd = sd(all_gene_aurocs)
+  
+  #Get a p-value through the mean sample error for each GO term
+  #Left sided p-value, GO terms with less preserved co-expression than expected
+  se_pval_vec_left = vector(mode = 'numeric', length = length(gene_set_scores))
+  for(i in 1:length(gene_set_scores)){
+    
+    sample_se = pop_sd / sqrt(gene_set_lengths[i])
+    z_score = (gene_set_scores[i] - pop_mu) / sample_se
+    se_pval_vec_left[i] = pnorm(z_score)
+  }
+  #Right sided p-value, GO terms with more preserved coexpression than expected
+  se_pval_vec_right = 1 - se_pval_vec_left
+  
+  go_term_presCoexp_df = data.frame(go_term = names(gene_set_scores),description = gene_set_descriptions,
+                                    gene_set_length = gene_set_lengths, presCoexp = gene_set_scores, 
+                                    left_pval = se_pval_vec_left, right_pval = se_pval_vec_right,
+                                    left_adj_pval = p.adjust(se_pval_vec_left, method = 'BH'), right_adj_pval = p.adjust(se_pval_vec_right, method = 'BH'))
+  go_term_presCoexp_df = go_term_presCoexp_df[order(go_term_presCoexp_df$left_adj_pval), ]
+  return(go_term_presCoexp_df)
+}
+
+
+
+
+#'Compute a percentile from ecdf
+#'@param x distribution to compute ecdf
+#'@param perc percentile to report
+#'@return double
+#'
+#'@export
+
+ecdf_fun <- function(x,perc) ecdf(x)(perc)
+
+
+
+#'Compute the preserved co-expression scores for the top 100 MetaMarker genes per cell-type for the test network and plot them in reference to our metaanalysis of fetal and organoid datasets
+#'@param aggregated_fetal_network the aggregated fetal co-expression network to act as a reference network. Any co-expression network will work, with the same gene annotations
+#'@param test_network the test co-expression network, we recommend using the rank standardized networks
+#'@param metamarkers A datatable of metamarkers, included as data for this package
+#'@param meta_presCoexp_df data frame of MetaMarker scores for the fetal and organoid datasets we assessed in our meta-analysis, included as data for this package
+#'@param parallel boolean, if the parallelized version should be implemented, requires the parallel R package
+#'@return a list including the MetaMarker scores for the test network and two ggplot objects plotting the results for the fetal and organoid datasets separately
+#'
+#'@export
+
+plot_meta_results = function(aggregated_fetal_network, test_network, meta_markers, meta_presCoexp_df, parallel = F){
+  
+  #Get the scores for the fetal metamarker sets of the test network
+  test_mat_scores = vector(mode = 'numeric', length = 6)
+  test_mat_celltypes = c('fetal Neural progenitor marker','fetal Dividing progenitor marker','fetal Intermediate progenitor marker',
+                         'fetal GABAergic marker','fetal glutamatergic marker','fetal non-neuronal marker')
+  
+  if(parallel){
+    test_mat_scores[1] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Neural_Progenitor', num_markers = 100, parallel = T)
+    test_mat_scores[2] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Dividing_Progenitor', num_markers = 100, parallel = T)
+    test_mat_scores[3] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Intermediate_Progenitor', num_markers = 100, parallel = T)
+    test_mat_scores[4] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'GABAergic', num_markers = 100, parallel = T)
+    test_mat_scores[5] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Glutamatergic', num_markers = 100, parallel = T)
+    test_mat_scores[6] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Non-neuronal', num_markers = 100, parallel = T)
+  }else{
+    test_mat_scores[1] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Neural_Progenitor', num_markers = 100)
+    test_mat_scores[2] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Dividing_Progenitor', num_markers = 100)
+    test_mat_scores[3] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Intermediate_Progenitor', num_markers = 100)
+    test_mat_scores[4] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'GABAergic', num_markers = 100)
+    test_mat_scores[5] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Glutamatergic', num_markers = 100)
+    test_mat_scores[6] = get_metaMarker_preserved_score(aggregated_fetal_network, test_network, meta_markers, celltype = 'Non-neuronal', num_markers = 100)
+  }
+  test_df = data.frame(Var1 = rep('test_network', length = 6), gene_celltype_label = test_mat_celltypes, score = test_mat_scores)
+  
+  #Get the percentiles of the test network's scores, using our meta-analysis of fetal and organoid datasets
+  org_fetal_percentile_vec = sapply(1:nrow(test_df), function(i) paste(as.character(round(ecdf_fun(filter(meta_presCoexp_df, 
+                                                                                                          dataset_type == 'Fetal' & gene_celltype_label == test_df$gene_celltype_label[i])$score,
+                                                                                                   filter(test_df, gene_celltype_label == test_df$gene_celltype_label[i])$score)*100)), 'percentile'))
+  
+  org_org_percentile_vec = sapply(1:nrow(test_df), function(i) paste(as.character(round(ecdf_fun(filter(meta_presCoexp_df, 
+                                                                                                        dataset_type == 'Organoid' & gene_celltype_label == test_df$gene_celltype_label[i])$score,
+                                                                                                 filter(test_df, gene_celltype_label == test_df$gene_celltype_label[i])$score)*100)), 'percentile'))
+  
+  test_df$org_fetal_percentile = org_fetal_percentile_vec 
+  test_df$org_org_percentile = org_org_percentile_vec 
+  #Plot
+  g_fetal = ggplot(filter(meta_presCoexp_df, dataset_type == 'Fetal'), aes(x = gene_celltype_label, y = score)) + geom_violin(scale = 'width') +
+    ylim(0,1) + ylab('Preserved Co-expression score') + ggtitle('Fetal datasets') + xlab('Top 100 Fetal MetaMarker gene sets' ) +
+    stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
+    geom_text(data = test_df, aes(label = org_fetal_percentile), y = .25) +
+    scale_x_discrete(guide = guide_axis(n.dodge=2))
+  
+  
+  g_org = ggplot(filter(meta_presCoexp_df, dataset_type == 'Organoid'), aes(x = gene_celltype_label, y = score)) + geom_violin(scale = 'width') +
+    ylim(0,1) + ylab('Preserved Co-expression score') + ggtitle('Organoid datasets') + xlab('Top 100 Fetal MetaMarker gene sets' ) +
+    stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
+    geom_text(data = test_df, aes(label = org_org_percentile), y = .25) +
+    scale_x_discrete(guide = guide_axis(n.dodge=2))
+  
+  return(list(test_df, g_fetal, g_org))
+}
+
 
 
 
