@@ -151,4 +151,4 @@ plot_results[[2]]
 plot_results[[3]]
 ```
 
-<embed src="man/figures/README-example_org_fetal_percentiles_violins.pdf" width="0.75\linewidth" style="display: block; margin: auto;" type="application/pdf" />
+<embed src="man/figures/README-example_org_fetal_percentiles_violins.pdf" width="100%" type="application/pdf" />

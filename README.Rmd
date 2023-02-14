@@ -150,7 +150,7 @@ plot_results[[3]]
 
 ```
 
-```{r, echo = FALSE, message=FALSE, fig.align='center', out.width='0.75\\linewidth', fig.pos='H'}
+```{r, echo = FALSE}
 knitr::include_graphics("man/figures/README-example_org_fetal_percentiles_violins.pdf")
 #knitr::include_graphics("man/figures/README-example_org_org_percentiles_violins.pdf")
 ```
