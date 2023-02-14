@@ -129,7 +129,11 @@ get_metaMarker_preserved_coexp(aggregated_fetal_network, rank_mat, fetal_meta_ma
 
 Additionally, you can explore preserved co-expression scores of GO
 terms. We provide a p-value computation for each GO term based on a mean
-sample error approach.
+sample error approach. The left-sided p-value represents the
+significance of GO terms that do not preserve co-expression and the
+right-sided p-value is the significance GO terms do preserve
+co-expression. We recommend filtering for GO terms with between 10-500
+genes.
 
 ``` r
 library(GO.db)

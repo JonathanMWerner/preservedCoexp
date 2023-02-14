@@ -277,29 +277,29 @@ plot_meta_results = function(aggregated_fetal_network, test_network, meta_marker
   test_df = data.frame(Var1 = rep('test_network', length = 6), gene_celltype_label = test_mat_celltypes, score = test_mat_scores)
   
   #Get the percentiles of the test network's scores, using our meta-analysis of fetal and organoid datasets
-  org_fetal_percentile_vec = sapply(1:nrow(test_df), function(i) paste(as.character(round(ecdf_fun(filter(meta_presCoexp_df, 
+  org_fetal_percentile_vec = sapply(1:nrow(test_df), function(i) paste(as.character(round(ecdf_fun(dplyr::filter(meta_presCoexp_df, 
                                                                                                           dataset_type == 'Fetal' & gene_celltype_label == test_df$gene_celltype_label[i])$score,
-                                                                                                   filter(test_df, gene_celltype_label == test_df$gene_celltype_label[i])$score)*100)), 'percentile'))
+                                                                                                   dplyr::filter(test_df, gene_celltype_label == test_df$gene_celltype_label[i])$score)*100)), 'percentile'))
   
-  org_org_percentile_vec = sapply(1:nrow(test_df), function(i) paste(as.character(round(ecdf_fun(filter(meta_presCoexp_df, 
+  org_org_percentile_vec = sapply(1:nrow(test_df), function(i) paste(as.character(round(ecdf_fun(dplyr::filter(meta_presCoexp_df, 
                                                                                                         dataset_type == 'Organoid' & gene_celltype_label == test_df$gene_celltype_label[i])$score,
-                                                                                                 filter(test_df, gene_celltype_label == test_df$gene_celltype_label[i])$score)*100)), 'percentile'))
+                                                                                                 dplyr::filter(test_df, gene_celltype_label == test_df$gene_celltype_label[i])$score)*100)), 'percentile'))
   
   test_df$org_fetal_percentile = org_fetal_percentile_vec 
   test_df$org_org_percentile = org_org_percentile_vec 
   #Plot
-  g_fetal = ggplot2::ggplot(dplyr::filter(meta_presCoexp_df, dataset_type == 'Fetal'), aes(x = gene_celltype_label, y = score)) + ggplot2::geom_violin(scale = 'width') +
+  g_fetal = ggplot2::ggplot(dplyr::filter(meta_presCoexp_df, dataset_type == 'Fetal'), ggplot2::aes(x = gene_celltype_label, y = score)) + ggplot2::geom_violin(scale = 'width') +
     ggplot2::ylim(0,1) +  ggplot2::ylab('Preserved Co-expression score') +  ggplot2::ggtitle('Fetal datasets') +  ggplot2::xlab('Top 100 Fetal MetaMarker gene sets' ) +
-    ggplot2::stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
-    ggplot2::geom_text(data = test_df, aes(label = org_fetal_percentile), y = .25) +
-    ggplot2::scale_x_discrete(guide = guide_axis(n.dodge=2))
+    ggplot2::stat_summary(data = test_df, ggplot2::aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
+    ggplot2::geom_text(data = test_df, ggplot2::aes(label = org_fetal_percentile), y = .25) +
+    ggplot2::scale_x_discrete(guide = ggplot2::guide_axis(n.dodge=2))
   
   
-  g_org =  ggplot2::ggplot( dplyr::filter(meta_presCoexp_df, dataset_type == 'Organoid'), aes(x = gene_celltype_label, y = score)) +  ggplot2::geom_violin(scale = 'width') +
+  g_org =  ggplot2::ggplot( dplyr::filter(meta_presCoexp_df, dataset_type == 'Organoid'), ggplot2::aes(x = gene_celltype_label, y = score)) +  ggplot2::geom_violin(scale = 'width') +
     ggplot2::ylim(0,1) +  ggplot2::ylab('Preserved Co-expression score') +  ggplot2::ggtitle('Organoid datasets') +  ggplot2::xlab('Top 100 Fetal MetaMarker gene sets' ) +
-    ggplot2::stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
-    ggplot2::geom_text(data = test_df, aes(label = org_org_percentile), y = .25) +
-    ggplot2::scale_x_discrete(guide = guide_axis(n.dodge=2))
+    ggplot2::stat_summary(data = test_df, ggplot2::aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
+    ggplot2::geom_text(data = test_df, ggplot2::aes(label = org_org_percentile), y = .25) +
+    ggplot2::scale_x_discrete(guide = ggplot2::guide_axis(n.dodge=2))
   
   return(list(test_df, g_fetal, g_org))
 }
