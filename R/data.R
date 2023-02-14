@@ -23,3 +23,8 @@
 #'Molecular Function go terms
 #'@description This is a binary matrix detailing the gene-GOterm relationships for the Molecular Function GO ontology
 'MF_GO_mat'
+
+
+#'Fetal and organoid Meta-analysis preserved co-expression results
+#'@description dataframe containing the cell-type preserved co-expression scores for the fetal and organoid datasets analyzed in Werner and Gillis (citation)
+'meta_presCoexp_df'

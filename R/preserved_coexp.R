@@ -8,7 +8,9 @@ load_fetal_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillisl
   download.file(url = data_url, destfile = 'temp_agg_fetal_network.Rdata')
   file = load('temp_agg_fetal_network.Rdata')
   aggregated_fetal_network = get(file)
-  rm(file, fetal_agg_rank_mat)         
+  rm(file, fetal_agg_rank_mat) 
+  unlink('temp_agg_fetal_network.Rdata')
+  gc()
   return(aggregated_fetal_network)
 }
 
@@ -286,45 +288,23 @@ plot_meta_results = function(aggregated_fetal_network, test_network, meta_marker
   test_df$org_fetal_percentile = org_fetal_percentile_vec 
   test_df$org_org_percentile = org_org_percentile_vec 
   #Plot
-  g_fetal = ggplot(filter(meta_presCoexp_df, dataset_type == 'Fetal'), aes(x = gene_celltype_label, y = score)) + geom_violin(scale = 'width') +
-    ylim(0,1) + ylab('Preserved Co-expression score') + ggtitle('Fetal datasets') + xlab('Top 100 Fetal MetaMarker gene sets' ) +
-    stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
-    geom_text(data = test_df, aes(label = org_fetal_percentile), y = .25) +
-    scale_x_discrete(guide = guide_axis(n.dodge=2))
+  g_fetal = ggplot2::ggplot(dplyr::filter(meta_presCoexp_df, dataset_type == 'Fetal'), aes(x = gene_celltype_label, y = score)) + ggplot2::geom_violin(scale = 'width') +
+    ggplot2::ylim(0,1) +  ggplot2::ylab('Preserved Co-expression score') +  ggplot2::ggtitle('Fetal datasets') +  ggplot2::xlab('Top 100 Fetal MetaMarker gene sets' ) +
+    ggplot2::stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
+    ggplot2::geom_text(data = test_df, aes(label = org_fetal_percentile), y = .25) +
+    ggplot2::scale_x_discrete(guide = guide_axis(n.dodge=2))
   
   
-  g_org = ggplot(filter(meta_presCoexp_df, dataset_type == 'Organoid'), aes(x = gene_celltype_label, y = score)) + geom_violin(scale = 'width') +
-    ylim(0,1) + ylab('Preserved Co-expression score') + ggtitle('Organoid datasets') + xlab('Top 100 Fetal MetaMarker gene sets' ) +
-    stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
-    geom_text(data = test_df, aes(label = org_org_percentile), y = .25) +
-    scale_x_discrete(guide = guide_axis(n.dodge=2))
+  g_org =  ggplot2::ggplot( dplyr::filter(meta_presCoexp_df, dataset_type == 'Organoid'), aes(x = gene_celltype_label, y = score)) +  ggplot2::geom_violin(scale = 'width') +
+    ggplot2::ylim(0,1) +  ggplot2::ylab('Preserved Co-expression score') +  ggplot2::ggtitle('Organoid datasets') +  ggplot2::xlab('Top 100 Fetal MetaMarker gene sets' ) +
+    ggplot2::stat_summary(data = test_df, aes(x = gene_celltype_label, y = score), fun = 'sum', color = 'red', geom = 'crossbar', width = .5) +
+    ggplot2::geom_text(data = test_df, aes(label = org_org_percentile), y = .25) +
+    ggplot2::scale_x_discrete(guide = guide_axis(n.dodge=2))
   
   return(list(test_df, g_fetal, g_org))
 }
 
 
-
-
-#'Plot the preserved co-expression scores for the top 100 Fetal MetaMarkers, placing the user's dataset in reference to our meta-analysis of fetal datasets
-#'@param user_network gene x gene co-expression network of the user's data, we recommend using the rank standardized network
-#'@return ggplot object
-#'
-#'@export
-
-plot_metafetal_results = function(user_network){
-  
-  
-}
-
-#'Plot the preserved co-expression scores for the top 100 Fetal MetaMarkers, placing the user's dataset in reference to our meta-analysis of organoid datasets
-#'@param user_network gene x gene co-expression network of the user's data, we recommend using the rank standardized network
-#'@return ggplot object
-#'
-#'@export
-plot_metaorganoid_results = function(user_network){
-  
-  
-}
 
 
 
