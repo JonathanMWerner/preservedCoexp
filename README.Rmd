@@ -151,9 +151,10 @@ plot_results[[3]]
 ```
 
 ```{r, echo = FALSE}
-knitr::include_graphics("man/figures/README-example_org_fetal_percentiles_violins.pdf")
-#knitr::include_graphics("man/figures/README-example_org_org_percentiles_violins.pdf")
+knitr::include_graphics("man/figures/README-example_org_fetal_percentiles_violins.png")
 ```
-
+```{r, echo = FALSE}
+knitr::include_graphics("man/figures/README-example_org_org_percentiles_violins.png")
+```
 
 
