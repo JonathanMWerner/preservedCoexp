@@ -86,25 +86,19 @@ First load into memory the aggregate fetal co-expression network and then explor
 ```r
 
 #If you get a timeout error when loading the aggregated co-expression network, try setting options(timeout=900) to allow longer time for download.
-
 aggregated_fetal_network = load_fetal_coexp()            
 
 
-
 #Get the preserved co-expression auroc of a single gene, in this case the first gene in the go_genes gene list
-
 get_gene_preserved_coexp(aggregated_fetal_network, rank_mat, go_genes[1])
 
 
-
-#Get the preserved co-expression score of a gene set. We highly recommend setting parallel = T if you work on a multi-core computer to increase speed. For systems with only a few cores (Macbook Pro 8-core), parallel = T may actually be slower, so user's should keep the defualt value. 
-
+#Get the preserved co-expression score of a gene set. We highly recommend setting parallel = T if you work on a multi-core computer to increase speed. 
+#For systems with only a few cores (Macbook Pro 8-core), parallel = T may actually be slower, so user's should keep the defualt value. 
 get_geneset_preserved_score(aggregated_fetal_network,rank_mat, go_genes[1:10], parallel = T)
 
 
-
 #This will return a named vector of preserved co-expression aurocs for all genes in the gene set
-
 get_geneset_preserved_coexp(aggregated_fetal_network,rank_mat, go_genes[1:10], parallel = T)
 
 ```
@@ -113,13 +107,10 @@ You can also compute the preserved co-expression of our fetal brain MetaMarkers 
 
 ``` r
 #Load the fetal MetaMarkers
-
 data('fetal_meta_markers', package = 'preservedCoexp')
 
 
-
 #Get the preserved co-expression aurocs for the top 10 MetaMarkers from the 6 broad fetal cell-types
-
 get_metaMarker_preserved_coexp(aggregated_fetal_network, rank_mat, fetal_meta_markers, celltype = 'Neural_Progenitor', num_markers = 10, parallel = T)
 get_metaMarker_preserved_coexp(aggregated_fetal_network, rank_mat, fetal_meta_markers, celltype = 'Dividing_Progenitor', num_markers = 10, parallel = T)
 get_metaMarker_preserved_coexp(aggregated_fetal_network, rank_mat, fetal_meta_markers, celltype = 'Intermediate_Progenitor', num_markers = 10, parallel = T)
@@ -137,9 +128,7 @@ library(GO.db)
 GO_descriptions = as.list(GOTERM)
 data('BP_GO_mat', package = 'preservedCoexp')         #A matrix containing gene and GO term relationships
 
-
 #This returns an ordered dataframe of GO terms, ordered by their FDR-adjusted p-value.
-
 BP_GO_results = get_GO_term_scores(aggregated_fetal_network, rank_mat, BP_GO_mat, parallel = T)
 
 ```
@@ -161,9 +150,9 @@ plot_results[[3]]
 
 ```
 
-```{r image-ref-for-in-text, echo = FALSE, message=FALSE, fig.align='center', out.width='0.75\\linewidth', fig.pos='H'}
+```{r, echo = FALSE, message=FALSE, fig.align='center', out.width='0.75\\linewidth', fig.pos='H'}
 knitr::include_graphics("man/figures/README-example_org_fetal_percentiles_violins.pdf")
-knitr::include_graphics("man/figures/README-example_org_org_percentiles_violins.pdf")
+#knitr::include_graphics("man/figures/README-example_org_org_percentiles_violins.pdf")
 ```
 
 
