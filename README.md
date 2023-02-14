@@ -73,9 +73,13 @@ rank_mat = rank_coexpression(rank_mat)        #Get rank standardized co-expressi
 
 Our measure of preserved co-expression quantifies the degree to which
 the top 10 co-expressed partners of a gene are shared between two
-co-expression networks. We use the auroc statistic, so for a single gene
-with an auroc of 1, the top 10 co-expressed partners for that gene
-across the two networks are exactly the same.
+co-expression networks, one reference and one test network. We use the
+auroc statistic, so for a single gene with an auroc of 1, the top 10
+co-expressed partners for that gene across the two networks are exactly
+the same. An auroc close to 0.5 shows there is no signal, the top 10
+co-expressed partners are randomly distributed in the test network. An
+auroc of exactly 0.5 represents a gene with 0 expression in the test
+network.
 
 We provide our aggregate fetal brain co-expression network to act as the
 reference network when quantifying preserved co-expression. You can
@@ -141,7 +145,9 @@ BP_GO_results = get_GO_term_scores(aggregated_fetal_network, rank_mat, BP_GO_mat
 We provide the results of our meta-analysis computing the preserved
 co-expression of 51 fetal and 124 organoid single-cell RNA-sequencing
 datasets. The following functions calculate the preserved co-expression
-scores of the top 100
+scores of the top 100 MetaMarkers per cell-type The red line indicates
+the percentile of the user’s co-expression network in either the fetal
+or organoid score distributions.
 
 ``` r
 data('fetal_meta_markers', package = 'preservedCoexp')   #Dataframe of fetal MetaMarkers 
