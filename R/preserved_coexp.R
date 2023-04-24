@@ -15,6 +15,22 @@ load_fetal_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillisl
 }
 
 
+#'Load the adult co-expression network as computed in Werner and Gillis (citation)
+#'@param data_url url for the adult co-expression network hosted on the Gillis lab public FTP server
+#'@return matrix
+#'@export
+
+load_adult_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillislab/resource/preserved_fetal_coexp/adult_coexp_network_1_16_23.Rdata'){
+  download.file(url = data_url, destfile = 'temp_adult_network.Rdata')
+  file = load('temp_adult_network.Rdata')
+  adult_network = get(file)
+  rm(file, rank_corr_matrix) 
+  unlink('temp_adult_network.Rdata')
+  gc()
+  return(adult_network)
+}
+
+
 
 #'Compute an auroc statistic using the Mann Whitney U test
 #'@param scores some metric for ranking data, must be compatible with the rank() function

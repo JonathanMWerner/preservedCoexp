@@ -107,7 +107,10 @@ then explore preserved co-expression scores of genes or gene sets.
 ``` r
 
 #If you get a timeout error when loading the aggregated co-expression network, try setting options(timeout=900) to allow longer time for download.
-aggregated_fetal_network = load_fetal_coexp()            
+aggregated_fetal_network = load_fetal_coexp()
+
+#You can also download the adult brain co-expression network
+adult_network = load_adult_coexp()
 
 
 #Get the preserved co-expression auroc of a single gene, in this case the first gene in the go_genes gene list
