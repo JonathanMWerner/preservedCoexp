@@ -11,14 +11,27 @@ preservedCoexp is an R package that quantifies the strength of preserved
 co-expression at the gene-level across two co-expression networks. It
 was originally designed to compute preserved co-expression between human
 fetal brain and human neural organoid co-expression networks, as
-implemented in Werner and Gillis 2023 (include citation). The package
+implemented in [Werner and
+Gillis 2023](https://doi.org/10.1101/2023.03.31.535112) . The package
 provides functions to compute co-expression networks from a
 gene-by-sample expression matrix. The package also provides
 meta-analytic fetal cell-type markers and an aggregated fetal
 co-expression network as data for users to compute preserved
 co-expression within their own organoid co-expression networks.
 
-## Installation
+## Installation and software requirements
+
+The preservedCoexp package was developed using R v4.2.2 and python
+v3.6.8
+
+This package can be run using a standard laptop; a MacBook Pro M2 with
+16GB of RAM and a high memory server with 188GB RAM were used in
+testing. Examples of timing for computing co-expression networks and
+quantifying preserved co-expression are included in Figure 6 of [Werner
+and Gillis 2023](https://doi.org/10.1101/2023.03.31.535112). A
+single-cell dataset of 40,000 cells took under 10 minutes for analysis
+on the MacBook and a dataset of 100,000 cells took under 6 minutes for
+analysis on the high-memory server.
 
 You can install the development version of preservedCoexp from
 [GitHub](https://github.com/) with:
@@ -55,9 +68,10 @@ BiocManager::install("GO.db")
 ## Beginning analysis
 
 preservedCoexp takes as input a normalized gene-by-sample expression
-matrix. We recommend CPM normalization. This package was originally
-designed to work with single-cell expression data, but a bulk
-gene-by-sample expression matrix would work as well.
+matrix, this is the exp\_data object in the code below. We recommend CPM
+normalization. This package was originally designed to work with
+single-cell expression data, but a bulk gene-by-sample expression matrix
+would work as well.
 
 ``` r
 library(preservedCoexp)
