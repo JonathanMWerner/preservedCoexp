@@ -5,7 +5,7 @@
 \alias{go_genes}
 \title{List of GO genes}
 \format{
-An object of class \code{character} of length 20709.
+An object of class \code{character} of length 20700.
 }
 \usage{
 go_genes

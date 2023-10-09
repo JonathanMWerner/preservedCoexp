@@ -5,7 +5,7 @@
 \alias{CC_GO_mat}
 \title{Cellular Component go terms}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 20709 rows and 2009 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 20700 rows and 1958 columns.
 }
 \usage{
 CC_GO_mat

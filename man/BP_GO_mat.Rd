@@ -5,7 +5,7 @@
 \alias{BP_GO_mat}
 \title{Biological Process go terms}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 20709 rows and 15947 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 20700 rows and 15960 columns.
 }
 \usage{
 BP_GO_mat

@@ -4,7 +4,7 @@
 #'@return matrix
 #'@export
 
-load_fetal_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillislab/resource/preserved_fetal_coexp/agg_fetal_coexp_network_1_16_23.Rdata'){
+load_fetal_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillislab/resource/preserved_fetal_coexp/agg_fetal_coexp_network_8_17_23.Rdata'){
   download.file(url = data_url, destfile = 'temp_agg_fetal_network.Rdata')
   file = load('temp_agg_fetal_network.Rdata')
   aggregated_fetal_network = get(file)
@@ -20,7 +20,7 @@ load_fetal_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillisl
 #'@return matrix
 #'@export
 
-load_adult_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillislab/resource/preserved_fetal_coexp/adult_coexp_network_1_16_23.Rdata'){
+load_adult_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillislab/resource/preserved_fetal_coexp/adult_coexp_network_8_17_23.Rdata'){
   download.file(url = data_url, destfile = 'temp_adult_network.Rdata')
   file = load('temp_adult_network.Rdata')
   adult_network = get(file)
