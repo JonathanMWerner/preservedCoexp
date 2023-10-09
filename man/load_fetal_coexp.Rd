@@ -6,7 +6,7 @@
 \usage{
 load_fetal_coexp(
   data_url =
-    "https://labshare.cshl.edu/shares/gillislab/resource/preserved_fetal_coexp/agg_fetal_coexp_network_1_16_23.Rdata"
+    "https://labshare.cshl.edu/shares/gillislab/resource/preserved_fetal_coexp/agg_fetal_coexp_network_8_17_23.Rdata"
 )
 }
 \arguments{
