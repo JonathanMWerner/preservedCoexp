@@ -5,7 +5,7 @@
 \alias{fetal_meta_markers}
 \title{Fetal metaMarkers}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 118538 rows and 50 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 135472 rows and 50 columns.
 }
 \usage{
 fetal_meta_markers

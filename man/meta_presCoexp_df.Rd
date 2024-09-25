@@ -5,7 +5,7 @@
 \alias{meta_presCoexp_df}
 \title{Fetal and organoid Meta-analysis preserved co-expression results}
 \format{
-An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 1050 rows and 4 columns.
+An object of class \code{grouped_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 1568 rows and 4 columns.
 }
 \usage{
 meta_presCoexp_df
