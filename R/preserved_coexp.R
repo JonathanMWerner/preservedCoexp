@@ -8,7 +8,7 @@ load_fetal_coexp = function(data_url = 'https://labshare.cshl.edu/shares/gillisl
   download.file(url = data_url, destfile = 'temp_agg_fetal_network.Rdata')
   file = load('temp_agg_fetal_network.Rdata')
   aggregated_fetal_network = get(file)
-  rm(file, fetal_agg_rank_mat) 
+  suppressWarnings(rm(file, fetal_agg_rank_mat))
   unlink('temp_agg_fetal_network.Rdata')
   gc()
   return(aggregated_fetal_network)
