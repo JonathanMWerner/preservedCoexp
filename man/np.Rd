@@ -5,7 +5,7 @@
 \alias{np}
 \title{Imports the python numpy library using reticulate}
 \format{
-An object of class \code{python.builtin.module} (inherits from \code{python.builtin.object}) of length 0.
+An object of class \code{python.builtin.module} (inherits from \code{python.builtin.object}) of length 1.
 }
 \usage{
 np

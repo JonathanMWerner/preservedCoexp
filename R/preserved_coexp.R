@@ -215,7 +215,9 @@ get_GO_term_scores = function(aggregated_fetal_network, test_network, go_matrix,
   #Gene set lengths for all go terms
   gene_set_lengths = colSums(go_matrix)
   #Get the description for each GO term
-  gene_set_descriptions = sapply(1:length(gene_set_lengths), function(i) Term(GO_descriptions[[names(gene_set_lengths)[i]]]) )
+  gene_set_descriptions = sapply(1:length(gene_set_lengths), function(i) 
+    ifelse(is.null(GO_descriptions[[names(gene_set_lengths)[i]]]), NA, Term(GO_descriptions[[names(gene_set_lengths)[i]]]) ) )
+  
   
   #Average preserved co-expression auroc for each gene set
   gene_set_scores = apply(go_matrix, 2, crossprod, all_gene_aurocs) / gene_set_lengths
